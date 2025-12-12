@@ -7,7 +7,7 @@ interface NewsRepository {
 
     fun getAllSubscriptions(): Flow<List<String>>
 
-    suspend fun addSubscription(topic: String): Long
+    suspend fun addSubscription(topic: String)
 
     suspend fun updateArticlesForTopic(topic: String)
 
