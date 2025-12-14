@@ -84,7 +84,7 @@ class SubscriptionsViewModel @Inject constructor(
 
             SubscriptionsCommand.RefreshData -> {
                 viewModelScope.launch {
-                    updateSubscribedArticlesUseCase(state.value.selectedTopics)
+                    updateSubscribedArticlesUseCase()
                 }
             }
 

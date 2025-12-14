@@ -6,5 +6,5 @@ import javax.inject.Inject
 class UpdateSubscribedArticlesUseCase @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
-    suspend operator fun invoke(topics: List<String>) = newsRepository.updateAllArticles()
+    suspend operator fun invoke() = newsRepository.updateAllArticles()
 }
