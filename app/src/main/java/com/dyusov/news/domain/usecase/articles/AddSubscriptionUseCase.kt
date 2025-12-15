@@ -1,4 +1,4 @@
-package com.dyusov.news.domain.usecase
+package com.dyusov.news.domain.usecase.articles
 
 import com.dyusov.news.domain.repo.NewsRepository
 import kotlinx.coroutines.CoroutineScope
