@@ -7,27 +7,26 @@ A modern Android news aggregator built with Kotlin and Jetpack Compose, implemen
 
 ## Key Features
 
-- **Reactive State Management**: Implemented ViewModel with StateFlow and sealed interfaces for type-safe UI commands, ensuring unidirectional data flow and predictable state updates
-- **Offline-First Architecture**: Utilizes Room database with structured concurrency for background data synchronization, allowing users to access cached articles without network dependency
-- **Dependency Injection with Hilt**: Configured modular dependency injection for testable code structure, enabling seamless repository pattern implementation across domain and data layers
-- **Asynchronous Data Processing**: Leverages Kotlin Coroutines and Flow for reactive streams, handling API calls with proper error boundaries and cancellation support
-- **Material 3 UI Components**: Built entirely with Jetpack Compose and Material 3, featuring custom theming and responsive layouts for modern Android design standards
+- **Reactive State Management**: ViewModel with StateFlow and sealed interfaces for type-safe UI commands
+- **Offline-First Architecture**: Room database with background synchronization for cached articles access
+- **Dependency Injection with Hilt**: Modular DI for testable code and repository pattern implementation
+- **Asynchronous Data Processing**: Kotlin Coroutines and Flow for reactive streams with error handling
+- **Material 3 UI Components**: Jetpack Compose with custom theming and responsive layouts
 
 ## Architecture
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Presentation  │    │     Domain      │    │      Data       │
-│   Layer         │◄──►│   Layer         │◄──►│   Layer         │
-│                 │    │                 │    │                 │
-│ • ViewModels    │    │ • Entities      │    │ • Repositories  │
-│ • UI Screens    │    │ • Use Cases     │    │ • API Services  │
-│ • State Mgmt    │    │ • Repositories  │    │ • Local DB      │
-│                 │    │                 │    │ • Mappers       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
+The app follows Clean Architecture principles with three main layers:
 
-This Clean Architecture implementation ensures separation of concerns with the Presentation layer handling UI logic via ViewModels and Compose screens, the Domain layer containing business rules through Use Cases and Repository interfaces, and the Data layer managing external data sources with Room for local persistence and Retrofit for remote API integration.
+- **Presentation Layer**: Jetpack Compose UI components with ViewModels implementing MVVM pattern
+- **Domain Layer**: Business logic with Use Cases and Repository interfaces
+- **Data Layer**: Room database implementation with Repository concrete classes
+
+```
+app/
+├── data/          # Data layer (Room, DAO, Repository impl)
+├── domain/        # Domain layer (Use Cases, Repository interfaces)
+└── presentation/  # Presentation layer (Compose UI, ViewModels)
+```
 
 ## Technical Stack
 
@@ -74,6 +73,6 @@ This Clean Architecture implementation ensures separation of concerns with the P
 
 7. **Assemble Release APK** (optional):
 
-   ```bash
-   ./gradlew assembleRelease
-   ```
+    ```bash
+    ./gradlew assembleRelease
+    ```
