@@ -13,7 +13,8 @@ import dagger.assisted.AssistedInject
 class RefreshDataWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val updateSubscribedArticlesUseCase: UpdateSubscribedArticlesUseCase
+    private val updateSubscribedArticlesUseCase: UpdateSubscribedArticlesUseCase,
+    private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(context, workerParameters) {
 
     // this method will be running in worker
@@ -21,6 +22,7 @@ class RefreshDataWorker @AssistedInject constructor(
         Log.d("RefreshDataWorker", "Start")
         updateSubscribedArticlesUseCase()
         Log.d("RefreshDataWorker", "Finish")
+        notificationHelper.showNewArticlesNotification(listOf()) // todo: temp
         return Result.success()
     }
 }

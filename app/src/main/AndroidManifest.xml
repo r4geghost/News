@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET"/> <!-- allow internet access -->
 
-    <application
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- allow notifications -->
+
+  <application
         android:name=".NewsApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

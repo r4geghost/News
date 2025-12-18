@@ -1,6 +1,8 @@
 package com.dyusov.news.di.modules
 
+import android.app.NotificationManager
 import android.content.Context
+import androidx.core.content.getSystemService
 import androidx.room.Room
 import androidx.work.WorkManager
 import com.dyusov.news.data.local.NewsDao
@@ -37,6 +39,14 @@ interface DataModule {
     fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
 
     companion object {
+
+        @Provides
+        @Singleton
+        fun provideNotificationManager(
+            @ApplicationContext context: Context
+        ): NotificationManager? {
+            return context.getSystemService<NotificationManager>()
+        }
 
         @Provides
         @Singleton
