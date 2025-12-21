@@ -79,9 +79,10 @@ fun SubscriptionsScreen(
     ) { innerPadding ->
         // use delegate
         val state by viewModel.state.collectAsState()
+        val refreshState by viewModel.refreshState.collectAsState()
 
         PullToRefreshBox(
-            isRefreshing = state.isRefreshing,
+            isRefreshing = refreshState,
             onRefresh = {
                 viewModel.processCommand(SubscriptionsCommand.RefreshData)
             },
