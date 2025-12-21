@@ -35,6 +35,8 @@ class SubscriptionsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SubscriptionState())
+    private val _isRefreshing = MutableStateFlow(false)
+
     val state = _state.asStateFlow()
 
     init {
@@ -83,8 +85,10 @@ class SubscriptionsViewModel @Inject constructor(
             }
 
             SubscriptionsCommand.RefreshData -> {
+                _isRefreshing.update { true }
                 viewModelScope.launch {
                     updateSubscribedArticlesUseCase()
+                    _isRefreshing.update { false }
                 }
             }
 
@@ -137,7 +141,8 @@ sealed interface SubscriptionsCommand {
 data class SubscriptionState(
     val searchQuery: String = "",
     val subscriptions: Map<String, Boolean> = mapOf(), // key = topic, value = whether filter is on
-    val articles: List<Article> = listOf()
+    val articles: List<Article> = listOf(),
+    val isRefreshing: Boolean = false
 ) {
     val selectedTopics: List<String>
         get() = subscriptions.filter { it.value }.map { it.key }

@@ -5,7 +5,10 @@ package com.dyusov.news.presentation.screen.subsriptions
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +26,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -38,9 +40,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.PullToRefreshState
+import androidx.compose.material3.pulltorefresh.pullToRefresh
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -69,9 +76,6 @@ fun SubscriptionsScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SubscriptionsTopBar(
-                onRefreshDataClick = {
-                    viewModel.processCommand(SubscriptionsCommand.RefreshData)
-                },
                 onClearArticlesClick = {
                     viewModel.processCommand(SubscriptionsCommand.ClearArticles)
                 },
@@ -82,74 +86,129 @@ fun SubscriptionsScreen(
         // use delegate
         val state by viewModel.state.collectAsState()
 
-        // all content is scrollable, so it will be wrapped in LazyColumn
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            contentPadding = innerPadding,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        PullToRefresh(
+            isRefreshing = state.isRefreshing,
+            onRefresh = {
+                viewModel.processCommand(SubscriptionsCommand.RefreshData)
+            },
+            content = {
+                ArticlesList(innerPadding, state, viewModel)
+            }
+        )
+    }
+}
 
+@Composable
+fun ArticlesList(
+    innerPadding: PaddingValues,
+    state: SubscriptionState,
+    viewModel: SubscriptionsViewModel
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        contentPadding = innerPadding,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        item {
+            Subscriptions(
+                query = state.searchQuery,
+                subscriptions = state.subscriptions,
+                isSubscribeButtonEnabled = state.subscribeButtonEnabled,
+                onTopicClick = { topic ->
+                    viewModel.processCommand(
+                        SubscriptionsCommand.ToggleTopicSelection(
+                            topic
+                        )
+                    )
+                },
+                onQueryChanged = { searchQuery ->
+                    viewModel.processCommand(
+                        SubscriptionsCommand.InputTopicSearch(
+                            searchQuery
+                        )
+                    )
+                },
+                onSubscribeButtonClick = {
+                    viewModel.processCommand(SubscriptionsCommand.Subscribe)
+                },
+                onDeleteSubscription = { topic ->
+                    viewModel.processCommand(
+                        SubscriptionsCommand.RemoveSubscription(
+                            topic
+                        )
+                    )
+                }
+            )
+        }
+
+        // is articles exist, show divider and label (and if subscriptions is not empty - how special text)
+        if (state.articles.isNotEmpty()) {
             item {
-                Subscriptions(
-                    query = state.searchQuery,
-                    subscriptions = state.subscriptions,
-                    isSubscribeButtonEnabled = state.subscribeButtonEnabled,
-                    onTopicClick = { topic ->
-                        viewModel.processCommand(SubscriptionsCommand.ToggleTopicSelection(topic))
-                    },
-                    onQueryChanged = { searchQuery ->
-                        viewModel.processCommand(SubscriptionsCommand.InputTopicSearch(searchQuery))
-                    },
-                    onSubscribeButtonClick = {
-                        viewModel.processCommand(SubscriptionsCommand.Subscribe)
-                    },
-                    onDeleteSubscription = { topic ->
-                        viewModel.processCommand(SubscriptionsCommand.RemoveSubscription(topic))
-                    }
+                // add divider
+                HorizontalDivider()
+            }
+            item {
+                Text(
+                    text = stringResource(R.string.articles, state.articles.size),
+                    fontWeight = FontWeight.Bold
                 )
             }
-
-            // is articles exist, show divider and label (and if subscriptions is not empty - how special text)
-            if (state.articles.isNotEmpty()) {
-                item {
-                    // add divider
-                    HorizontalDivider()
-                }
-                item {
-                    Text(
-                        text = stringResource(R.string.articles, state.articles.size),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                items(
-                    items = state.articles,
-                    key = { it.url }
-                ) {
-                    ArticleCard(article = it)
-                }
-            } else if (state.subscriptions.isNotEmpty()) {
-                item {
-                    // add divider
-                    HorizontalDivider()
-                }
-                item {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.no_articles_for_selected_subscriptions),
-                        textAlign = TextAlign.Center
-                    )
-                }
+            items(
+                items = state.articles,
+                key = { it.url }
+            ) {
+                ArticleCard(article = it)
+            }
+        } else if (state.subscriptions.isNotEmpty()) {
+            item {
+                // add divider
+                HorizontalDivider()
+            }
+            item {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.no_articles_for_selected_subscriptions),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
 }
 
 @Composable
+fun PullToRefresh(
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit
+) {
+    val pullState: PullToRefreshState = rememberPullToRefreshState()
+
+    Box(
+        modifier.pullToRefresh(
+            state = pullState,
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh
+        ),
+        contentAlignment = Alignment.TopStart
+    ) {
+        content()
+        Indicator(
+            modifier = Modifier.align(Alignment.TopCenter),
+            isRefreshing = isRefreshing,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            state = pullState
+        )
+    }
+}
+
+@Composable
 private fun SubscriptionsTopBar(
     modifier: Modifier = Modifier,
-    onRefreshDataClick: () -> Unit,
     onClearArticlesClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
@@ -161,17 +220,6 @@ private fun SubscriptionsTopBar(
         },
         // all elements will be in one row
         actions = {
-            // update articles button
-            Icon(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .clickable {
-                        onRefreshDataClick()
-                    }
-                    .padding(8.dp),
-                imageVector = Icons.Default.Refresh,
-                contentDescription = stringResource(R.string.update_articles)
-            )
             // clear articles button
             Icon(
                 modifier = Modifier
