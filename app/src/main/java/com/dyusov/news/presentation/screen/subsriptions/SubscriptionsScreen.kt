@@ -85,16 +85,15 @@ fun SubscriptionsScreen(
             isRefreshing = refreshState,
             onRefresh = {
                 viewModel.processCommand(SubscriptionsCommand.RefreshData)
-            },
-            content = {
-                ArticlesList(innerPadding, state, viewModel)
             }
-        )
+        ) {
+            MainScreen(innerPadding, state, viewModel)
+        }
     }
 }
 
 @Composable
-fun ArticlesList(
+fun MainScreen(
     innerPadding: PaddingValues,
     state: SubscriptionState,
     viewModel: SubscriptionsViewModel
