@@ -5,8 +5,6 @@ package com.dyusov.news.presentation.screen.subsriptions
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -40,14 +38,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
-import androidx.compose.material3.pulltorefresh.pullToRefresh
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -86,7 +80,7 @@ fun SubscriptionsScreen(
         // use delegate
         val state by viewModel.state.collectAsState()
 
-        PullToRefresh(
+        PullToRefreshBox(
             isRefreshing = state.isRefreshing,
             onRefresh = {
                 viewModel.processCommand(SubscriptionsCommand.RefreshData)
@@ -175,34 +169,6 @@ fun ArticlesList(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun PullToRefresh(
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
-) {
-    val pullState: PullToRefreshState = rememberPullToRefreshState()
-
-    Box(
-        modifier.pullToRefresh(
-            state = pullState,
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh
-        ),
-        contentAlignment = Alignment.TopStart
-    ) {
-        content()
-        Indicator(
-            modifier = Modifier.align(Alignment.TopCenter),
-            isRefreshing = isRefreshing,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            state = pullState
-        )
     }
 }
 
