@@ -8,15 +8,6 @@ data class Settings(
 ) {
     companion object {
 
-        fun getDefault(): Settings {
-            return Settings(
-                language = DEFAULT_LANGUAGE,
-                interval = DEFAULT_INTERVAL,
-                notificationsEnabled = DEFAULT_NOTIFICATIONS_ENABLED,
-                wifiOnly = DEFAULT_WIFI_ONLY
-            )
-        }
-
         val DEFAULT_LANGUAGE = Language.ENGLISH
         val DEFAULT_INTERVAL = Interval.MIN_15
         const val DEFAULT_NOTIFICATIONS_ENABLED = false

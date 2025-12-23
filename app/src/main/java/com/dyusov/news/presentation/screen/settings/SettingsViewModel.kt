@@ -81,7 +81,5 @@ sealed interface SettingsState {
 
     data object Initial : SettingsState
 
-    data class SettingsConfig(
-        val settings: Settings = Settings.getDefault()
-    ) : SettingsState
+    data class SettingsConfig(val settings: Settings) : SettingsState
 }
