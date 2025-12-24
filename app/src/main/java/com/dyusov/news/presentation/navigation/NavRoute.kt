@@ -55,5 +55,10 @@ fun NavRoute() {
             slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
                 targetOffsetX = { it })
         },
+        predictivePopTransitionSpec = {
+            // Slide in from left when navigating back
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                    slideOutHorizontally(targetOffsetX = { it })
+        }
     )
 }
