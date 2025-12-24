@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.dyusov.news.presentation.screen.settings.SettingsScreen
+import com.dyusov.news.presentation.navigation.NavRoute
 import com.dyusov.news.presentation.theme.ui.NewsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,10 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NewsTheme {
-                // todo: temp
-                SettingsScreen(
-                    onBackClick = {}
-                )
+                NavRoute()
             }
         }
     }
