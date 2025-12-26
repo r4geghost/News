@@ -47,6 +47,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -379,47 +380,21 @@ private fun ArticleCard(
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // article header
-        Text(
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            text = article.title,
-            maxLines = 2, // header size = 2 rows max
-            overflow = TextOverflow.Ellipsis, // if overflow, print "..."
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            lineHeight = 1.3.em
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // show article description if exists
-        if (article.description.isNotEmpty()) {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = article.description,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 14.sp,
-                lineHeight = 1.5.em
-                lineHeight = 1.3.em
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+        Spacer(modifier = Modifier.height(6.dp))
 
         // row with source and published date
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween // space evenly
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
+                fontWeight = FontWeight.Medium,
                 text = article.source,
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 14.sp
+                fontSize = 12.sp
             )
             Text(
                 text = article.publishedAt.formatDate(),
@@ -428,7 +403,32 @@ private fun ArticleCard(
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        // article header
+        Text(
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            text = article.title,
+            maxLines = 2, // header size = 2 rows max
+            overflow = TextOverflow.Ellipsis, // if overflow, print "..."
+            fontWeight = FontWeight.Black,
+            fontSize = 20.sp,
+            lineHeight = 1.3.em
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // show article description if exists
+        if (article.description.isNotEmpty()) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = article.description,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 16.sp,
+                lineHeight = 1.3.em
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         // row with two buttons - open article and share
         Row(
