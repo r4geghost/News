@@ -147,7 +147,7 @@ fun MainScreen(
         if (state.articles.isNotEmpty()) {
             item {
                 // add divider
-                HorizontalDivider()
+                HorizontalDivider(modifier = Modifier.padding(top = 4.dp))
             }
             item {
                 Text(
@@ -244,7 +244,7 @@ private fun SubscriptionChip(
         trailingIcon = {
             Icon(
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(24.dp)
                     .clickable {
                         onDeleteSubscription(topic)
                     },
@@ -323,7 +323,7 @@ private fun Subscriptions(
             onSubscribeButtonClick = onSubscribeButtonClick
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // if there are subscriptions, show them below search field, else - text "No subscriptions"
         if (subscriptions.isNotEmpty()) {
@@ -334,6 +334,7 @@ private fun Subscriptions(
                 subscriptions.forEach { (topic, isSelected) ->
                     item(key = topic) {
                         SubscriptionChip(
+                            modifier = Modifier.clip(RoundedCornerShape(12.dp)),
                             topic = topic,
                             isSelected = isSelected,
                             onSubscriptionClick = onTopicClick,
