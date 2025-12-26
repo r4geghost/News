@@ -37,6 +37,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -233,7 +234,11 @@ private fun SubscriptionChip(
             onSubscriptionClick(topic)
         },
         label = {
-            Text(topic)
+            Text(
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 12.dp),
+                fontSize = 18.sp,
+                text = topic
+            )
         },
         // "remove" icon at the end of the chip
         trailingIcon = {
@@ -258,12 +263,18 @@ fun SearchBarWithAddButton(
     onSubscribeButtonClick: () -> Unit
 ) {
     OutlinedTextField(
+        textStyle = LocalTextStyle.current.copy(
+            fontSize = 20.sp
+        ),
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         value = query,
         onValueChange = onQueryChanged,
         label = {
-            Text(stringResource(R.string.what_interests_you))
+            Text(
+                fontSize = 16.sp,
+                text = stringResource(R.string.what_interests_you)
+            )
         },
         // action on keyboard "enter"
         keyboardActions = KeyboardActions(
