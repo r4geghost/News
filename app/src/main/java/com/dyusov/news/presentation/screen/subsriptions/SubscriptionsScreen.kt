@@ -56,6 +56,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -388,7 +389,8 @@ private fun ArticleCard(
             maxLines = 2, // header size = 2 rows max
             overflow = TextOverflow.Ellipsis, // if overflow, print "..."
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            lineHeight = 1.5.em
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -400,7 +402,8 @@ private fun ArticleCard(
                 text = article.description,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                lineHeight = 1.5.em
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
