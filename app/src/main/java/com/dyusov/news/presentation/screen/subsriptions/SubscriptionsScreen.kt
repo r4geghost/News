@@ -190,7 +190,12 @@ private fun SubscriptionsTopBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Text(text = stringResource(R.string.subscriptions_title))
+            Text(
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                text = stringResource(R.string.subscriptions_title)
+            )
         },
         // all elements will be in one row
         actions = {

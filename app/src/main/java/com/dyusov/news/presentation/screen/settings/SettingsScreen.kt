@@ -74,6 +74,8 @@ fun SettingsScreen(
             TopAppBar(
                 title = {
                     Text(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
                         textAlign = TextAlign.Center,
                         text = stringResource(R.string.settings)
                     )

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">News</string>
-    <string name="subscriptions_title">My News</string>
+    <string name="subscriptions_title">News feed</string>
     <string name="update_articles">Update articles</string>
     <string name="clear_articles">Clear articles</string>
     <string name="settings_screen">settings screen</string>
@@ -16,7 +16,7 @@
     <string name="share_article">Share article</string>
     <string name="share">Share</string>
     <string name="no_articles_for_selected_subscriptions">No articles for selected subscriptions</string>
-    <string name="articles">Articles (%1$d)</string>
+    <string name="articles">Found %1$d articles for you</string>
     <string name="new_articles">New articles</string>
     <string name="new_articles_notification_title">New articles</string>
     <string name="updated_subscriptions">Updated %1$d subscriptions: %2$s</string>
