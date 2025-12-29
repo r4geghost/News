@@ -13,6 +13,7 @@ import com.dyusov.news.data.local.SubscriptionDbModel
 import com.dyusov.news.data.mapper.toDbModels
 import com.dyusov.news.data.mapper.toEntities
 import com.dyusov.news.data.mapper.toQueryParam
+import com.dyusov.news.BuildConfig
 import com.dyusov.news.data.remote.NewsApiService
 import com.dyusov.news.domain.entity.Article
 import com.dyusov.news.domain.entity.Language
@@ -89,7 +90,7 @@ class NewsRepositoryImpl @Inject constructor(
 
     private suspend fun loadArticles(topic: String, language: Language): List<ArticleDbModel> {
         return try {
-            newsApiService.loadArticles(topic, language.toQueryParam()).toDbModels(topic)
+            newsApiService.loadArticles(BuildConfig.NEWS_API_KEY, topic, language.toQueryParam()).toDbModels(topic)
         } catch (e: Exception) {
             if (e is CancellationException) {
                 throw e
