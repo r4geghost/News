@@ -1,6 +1,6 @@
 # News Android App
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/meekieD/News?logo=github)](https://github.com/meekieD/News/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/meekieD/News?logo=github)](https://github.com/meekieD/News/releases/latest)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
 [![Android](https://img.shields.io/badge/Android-API_24%2B-blue.svg?logo=android)](https://developer.android.com/studio/releases/platforms)
 
